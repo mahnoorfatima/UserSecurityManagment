@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 
+  user-security-management
+
+  Sample SAM Template for user-security-management
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
+    Environment: 
+      Variables:
+        USER_POOL_ID: '{{resolve:ssm:/prod/cognito/userpool:1}}'
+
+Resources:
+  UserManagement:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: handlers/user_management.lambda_handler
+      Runtime: python3.9
+      MemorySize: 256
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/lambda_user-management'
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-af1ac2dc
+        SubnetIds:
+          - subnet-04612348
+          - subnet-4e329f25
+  
+  PolicyManagement:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: handlers/policy_management.lambda_handler
+      Runtime: python3.9
+      MemorySize: 256
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/lambda_user-management'
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-af1ac2dc
+        SubnetIds:
+          - subnet-04612348
+          - subnet-4e329f25

@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "user-security-management"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-qowe8tanhfa6"
+s3_prefix = "user-security-management"
+region = "us-east-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
